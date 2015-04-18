@@ -10,76 +10,26 @@
     <packaging>war</packaging>
 
     <dependencies>
-
-
-        <!--dependency>
-            <groupId>edu.indiana.d2i.komadu</groupId>
-            <artifactId>komadu-axis2-client-core</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.googlecode.foresite-toolkit</groupId>
-            <artifactId>foresite</artifactId>
-            <version>0.9</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.seadva.registry</groupId>
-            <artifactId>sead-registry-mapper</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-mock</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency!-->
-
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-server</artifactId>
             <version>${jersey-version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-atom-abdera</artifactId>
             <version>${jersey-version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.sun.jersey.contribs</groupId>
             <artifactId>jersey-multipart</artifactId>
             <version>${jersey-version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>
             <version>${jersey-version}</version>
         </dependency>
-
-
-        <!--dependency>
-            <groupId>org.apache.axis2</groupId>
-            <artifactId>axis2</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.axis2</groupId>
-            <artifactId>axis2-transport-local</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.axis2</groupId>
-            <artifactId>axis2-transport-http</artifactId>
-            <version>1.6.2</version>
-        </dependency!-->
         <dependency>
             <groupId>org.apache.ws.commons.axiom</groupId>
             <artifactId>axiom-api</artifactId>
@@ -90,28 +40,6 @@
             <artifactId>axiom-impl</artifactId>
             <version>1.2.13</version>
         </dependency>
-
-        <!--dependency>
-            <groupId>org.apache.neethi</groupId>
-            <artifactId>neethi</artifactId>
-            <version>3.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.ws.commons.schema</groupId>
-            <artifactId>XmlSchema</artifactId>
-            <version>1.4.7</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.xmlbeans</groupId>
-            <artifactId>xmlbeans</artifactId>
-            <version>2.3.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>stax</groupId>
-                    <artifactId>stax-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency!-->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
@@ -154,44 +82,12 @@
             <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.0.1</version>
             <scope>provided</scope>
         </dependency>
-
-        <!--dependency>
-            <groupId>org.openprovenance.prov</groupId>
-            <artifactId>prov-model</artifactId>
-            <version>0.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openprovenance.prov</groupId>
-            <artifactId>prov-xml</artifactId>
-            <version>0.4.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>2.5.6</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>2.5.6</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>2.5.6</version>
-        </dependency!-->
-
         <dependency>
             <groupId>com.sun.jersey.jersey-test-framework</groupId>
             <artifactId>jersey-test-framework-core</artifactId>
@@ -207,7 +103,6 @@
 
     <build>
         <plugins>
-
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <inherited>true</inherited>
@@ -216,8 +111,6 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
@@ -239,7 +132,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -253,7 +145,6 @@
             </plugin>
         </plugins>
     </build>
-
 
     <properties>
         <jersey-version>1.8</jersey-version>
