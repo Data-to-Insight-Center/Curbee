@@ -16,5 +16,31 @@
   -->
 
 <sead-config>
+    <!--workflow level parameters-->
+    <parameter name="useMessaging">false</parameter>
+
+    <!--list of activities to be executed in SEAD workflow-->
+    <activities>
+        <!--activity to persist RO in RO subsystem -->
+        <activity name="persist_ro" class="org.sead.workflow.activity.impl.PersistROActivity">
+            <parameter name="roSystemUrl">http://localhost:8080/ro</parameter>
+        </activity>
+        <!--activity to generate ORE/SIP etc. by calling the metadata service-->
+        <activity name="generate_metadata" class="org.sead.workflow.activity.impl.GenerateMetadataActivity">
+            <parameter name="metadataServiceUrl">http://localhost:8080/meta</parameter>
+        </activity>
+        <!--activity to call Matchmaker to publish the RO-->
+        <activity name="publish_ro" class="org.sead.workflow.activity.impl.PublishROActivity">
+            <parameter name="matchmakerUrl">http://localhost:8080/mm</parameter>
+        </activity>
+        <!--activity to update Project Spaces with the DOI-->
+        <activity name="update_ps" class="org.sead.workflow.activity.impl.UpdatePsActivity">
+            <parameter name="psUrl">http://localhost:8080/ps</parameter>
+        </activity>
+        <!--activity to update PDT with the details of the published RO-->
+        <activity name="update_pdt" class="org.sead.workflow.activity.impl.UpdatePdtActivity">
+            <parameter name="pdtUrl">http://localhost:8080/pdt</parameter>
+        </activity>
+    </activities>
 
 </sead-config>

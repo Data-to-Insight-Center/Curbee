@@ -3,6 +3,7 @@ package org.sead.workflow;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
 import org.apache.axiom.om.OMXMLParserWrapper;
+import org.sead.workflow.config.SeadWorkflowConfig;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -12,6 +13,8 @@ import java.io.InputStream;
 @Path("service")
 public class SeadWorkflowService {
 
+    private static SeadWorkflowConfig config = new SeadWorkflowConfig();
+
     static {
         // reads the sead-wf.xml to load the workflow configuration
         InputStream inputStream =
@@ -20,6 +23,9 @@ public class SeadWorkflowService {
         builder.setCache(true);
         OMElement docElement = builder.getDocumentElement();
         System.out.println("Loaded element: " + docElement.getLocalName());
+
+        config.addParam("", "");
+
     }
 
     /**
