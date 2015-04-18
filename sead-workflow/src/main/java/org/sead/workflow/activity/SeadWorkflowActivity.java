@@ -12,4 +12,8 @@ public interface SeadWorkflowActivity {
      */
     public void execute();
 
+    public void addParam(String key, String value);
+
+    public void setName(String name);
+
 }
