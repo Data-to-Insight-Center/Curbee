@@ -10,7 +10,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>sead-workflow</module>
+        <module>va-workflow</module>
         <module>ps-stub</module>
     </modules>
 
