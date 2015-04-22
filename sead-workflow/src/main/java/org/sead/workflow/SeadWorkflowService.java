@@ -72,10 +72,6 @@ public class SeadWorkflowService {
     @Path("/ping")
     @Produces(MediaType.TEXT_PLAIN)
     public String ping() {
-        // activity test
-        for (SeadWorkflowActivity activity : config.getActivities()) {
-            activity.execute();
-        }
         return "SEAD Workflow Service is up!";
     }
 
@@ -88,12 +84,13 @@ public class SeadWorkflowService {
     @POST
     @Path("/publishRO")
     @Consumes("application/json")
-    public Response publishRO(@QueryParam("ro") String ro) {
-        // TODO: Get the RO JSON and invoke activities
+    public String publishRO(String ro) {
+        System.out.println("Input JSON: " + ro);
         for (SeadWorkflowActivity activity : config.getActivities()) {
             activity.execute();
         }
-        return Response.ok().build();
+//        return Response.ok().build();
+        return "SEAD Publish Workflow triggered!";
     }
 
 }
