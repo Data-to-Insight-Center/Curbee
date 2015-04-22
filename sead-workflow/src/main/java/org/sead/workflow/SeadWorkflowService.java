@@ -69,6 +69,7 @@ public class SeadWorkflowService {
      * @return ACK
      */
     @GET
+    @Path("/ping")
     @Produces(MediaType.TEXT_PLAIN)
     public String ping() {
         // activity test
