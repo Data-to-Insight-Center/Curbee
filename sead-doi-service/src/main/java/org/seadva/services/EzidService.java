@@ -85,7 +85,7 @@ public class EzidService {
             System.out.println("Invalid Mode");
         }
 
-        System.out.println(System.getProperty("java.io.tmpdir"));
+        //System.out.println(System.getProperty("java.io.tmpdir"));
     }
 
     /**

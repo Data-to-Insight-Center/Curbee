@@ -12,6 +12,8 @@
     <modules>
         <module>va-workflow</module>
         <module>ps-stub</module>
+        <module>sead-doi-service</module>
+        <module>metadata-gen</module>
     </modules>
 
 </project>
