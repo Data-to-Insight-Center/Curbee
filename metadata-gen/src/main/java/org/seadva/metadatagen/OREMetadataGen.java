@@ -1,6 +1,5 @@
 package org.seadva.metadatagen;
 
-import com.hp.hpl.jena.graph.query.SimpleQueryEngine;
 import org.dspace.foresite.*;
 import org.dspace.foresite.jena.TripleJena;
 import org.json.JSONException;
