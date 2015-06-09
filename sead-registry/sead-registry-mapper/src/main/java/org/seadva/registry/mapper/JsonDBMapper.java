@@ -1,21 +1,24 @@
 package org.seadva.registry.mapper;
 
-import com.google.gson.Gson;
-import org.dspace.foresite.*;
-import org.dspace.foresite.jena.TripleJena;
+import com.github.jsonldjava.utils.JsonUtils;
+import org.dspace.foresite.OREException;
+import org.dspace.foresite.Predicate;
+import org.dspace.foresite.Vocab;
 import org.json.JSONException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ContainerFactory;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.seadva.registry.client.RegistryClient;
 import org.seadva.registry.database.model.obj.vaRegistry.*;
 import org.seadva.registry.database.model.obj.vaRegistry.Collection;
 import org.seadva.registry.mapper.util.Constants;
 import org.seadva.registry.mapper.util.RO;
-import org.seadva.registry.mapper.util.ROObject;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -149,5 +152,81 @@ public class JsonDBMapper {
             }
 
         return ro.toJSON();
+    }
+
+    public void fromJSONLD(java.io.File filename) throws IOException {
+        InputStream inputStream = new FileInputStream(filename);
+        Object jsonObject = JsonUtils.fromInputStream(inputStream);
+        System.out.println(jsonObject.toString());
+    }
+
+    public void readJSONLD(java.io.File filename) throws IOException, ParseException {
+        JSONParser jsonParser = new JSONParser();
+        ContainerFactory containerFactory = new ContainerFactory(){
+            public List creatArrayContainer() {
+                return new LinkedList();
+            }
+
+            public Map createObjectContainer() {
+                return new LinkedHashMap();
+            }
+
+        };
+        try{
+            Map json = (Map)jsonParser.parse(new FileReader(filename), containerFactory);
+            Iterator iter = json.entrySet().iterator();
+            System.out.println("==iterate result==");
+            Object contextString = json.get("@context");
+            System.out.println(contextString);
+
+
+//            JSONObject jsonObject1 = (JSONObject)object1;
+//            JSONArray context = (JSONArray)jsonObject1.get("@context");
+//
+//            JSONParser jsonParser1 = new JSONParser();
+//            Object object = jsonParser1.parse(new FileReader(filename));
+//            JSONObject jsonObject = (JSONObject)object;
+//            for(Iterator iterator = jsonObject.keySet().iterator(); iterator.hasNext();) {
+//                String key = (String) iterator.next();
+//
+//                System.out.println(jsonObject.get(key));
+//            }
+//
+//            Object obj = jsonParser1.parse(new FileReader(filename));
+//            JSONArray jsonArray = (JSONArray)obj;
+//            for(int i=0; i<jsonArray.size(); i++){
+//                System.out.println("The " + i + " element of the array: " + jsonArray.get(i));
+//            }
+//            // BaseEntity
+//            Collection collection = new Collection();
+//            collection.setId(new String("http://localhost:8080/entity/1001"));
+//            collection.setName(json.get("Title").toString());
+//            collection.setEntityCreatedTime(new Date());
+//            collection.setEntityLastUpdatedTime(new Date());
+//            collection.setVersionNum("1");
+//            collection.setIsObsolete(0);
+//            collection.setState(client.getStateByName("PO"));
+//            //
+//            Property property = new Property();
+//            MetadataType metadataType = new MetadataType();
+//            if(json.get("Abstract").toString() != null) {
+//                metadataType = client.getMetadataByType("abstract");
+//                if(metadataType != null){
+//                    property.setMetadata(metadataType);
+//                    property.setValuestr(json.get("Abstract").toString());
+//                    property.setEntity(collection);
+//                    collection.addProperty(property);
+//                }
+//            }
+//
+//            List<Property> properties = new ArrayList<Property>();
+            while(iter.hasNext()){
+                Map.Entry entry = (Map.Entry)iter.next();
+                System.out.println(entry.getKey() + "=>" + entry.getValue());
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

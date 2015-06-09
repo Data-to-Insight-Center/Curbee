@@ -1,8 +1,6 @@
 package org.seadva.registry.mapper.util;
 
-import com.google.gson.Gson;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.seadva.registry.database.model.obj.vaRegistry.BaseEntity;
 import org.seadva.registry.database.model.obj.vaRegistry.Collection;
 import org.seadva.registry.database.model.obj.vaRegistry.File;
@@ -12,7 +10,8 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The RO object is used to represent a collection with its parent

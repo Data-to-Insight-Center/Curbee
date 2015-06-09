@@ -15,7 +15,11 @@
     </parent>
 
     <dependencies>
-
+        <dependency>
+            <groupId>com.github.jsonld-java</groupId>
+            <artifactId>jsonld-java</artifactId>
+            <version>0.5.1</version>
+        </dependency>
         <dependency>
             <groupId>org.seadva.data.lifecycle</groupId>
             <artifactId>ro-subsystem-support</artifactId>

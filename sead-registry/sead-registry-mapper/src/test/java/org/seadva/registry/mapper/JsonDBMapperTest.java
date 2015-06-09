@@ -20,9 +20,11 @@ import com.sun.jersey.test.framework.JerseyTest;
 import org.dataconservancy.model.builder.InvalidXmlException;
 import org.dspace.foresite.*;
 import org.json.JSONException;
+import org.json.simple.parser.ParseException;
 import org.junit.Test;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -37,7 +39,7 @@ public class JsonDBMapperTest extends JerseyTest {
     }
 
     @Test
-    public void testMapperForJSONLD()
+    public void testToJSONLD()
             throws IOException, InvalidXmlException, ClassNotFoundException,
             OREParserException, OREException, URISyntaxException, ORESerialiserException, JSONException {
 
@@ -50,5 +52,26 @@ public class JsonDBMapperTest extends JerseyTest {
         System.out.println(json);
     }
 
+    @Test
+    public void testFromJSONLD()
+            throws IOException, InvalidXmlException, ClassNotFoundException,
+            OREParserException, OREException, URISyntaxException, ORESerialiserException, JSONException {
+
+        JsonDBMapper jsonDBMapper =  new JsonDBMapper("http://localhost:8080/registry/rest/");
+        jsonDBMapper.fromJSONLD(new File("/Users/aravindh/Documents/Aravindh/sead_config_files/sample_json.json"));
+    }
+
+    @Test
+    public void testReadJSONLD()
+            throws IOException, InvalidXmlException, ClassNotFoundException,
+            OREParserException, OREException, URISyntaxException, ORESerialiserException, JSONException {
+
+        JsonDBMapper jsonDBMapper =  new JsonDBMapper("http://localhost:8080/registry/rest/");
+        try {
+            jsonDBMapper.readJSONLD(new File("/Users/aravindh/Documents/Aravindh/sead_config_files/sample_json.json"));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
     private static final String RESOURCE_MAP_SERIALIZATION_FORMAT = "RDF/XML";
 }
