@@ -5,14 +5,14 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>c3pr-gc</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>${curbee.version}</version>
     <name>C3PR Garbage Collector</name>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>org.sead.va</groupId>
         <artifactId>va-parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>${curbee.version}</version>
     </parent>
 
     <build>

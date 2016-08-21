@@ -3,21 +3,21 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>monitoring-ui</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>${monitoring.version}</version>
     <packaging>war</packaging>
     <name>SEAD Monitoring - Web Application</name>
 
     <parent>
         <groupId>org.sead.va</groupId>
         <artifactId>sead-monitoring-parent</artifactId>
-        <version>2.0.0-SNAPSHOT</version>
+        <version>${monitoring.version}</version>
     </parent>
 
     <dependencies>
         <dependency>
             <groupId>org.sead.va</groupId>
             <artifactId>monitoring-engine</artifactId>
-            <version>2.0.0-SNAPSHOT</version>
+            <version>${monitoring.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

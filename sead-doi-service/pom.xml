@@ -9,7 +9,7 @@
 	<parent>
 		<artifactId>va-parent</artifactId>
 		<groupId>org.sead.va</groupId>
-		<version>2.0.0-SNAPSHOT</version>
+		<version>${curbee.version}</version>
 	</parent>
 
 	<build>

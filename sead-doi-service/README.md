@@ -14,9 +14,9 @@ mvn clean install -DskipTests
 Steps to deploy on Tomcat:
 --------------------------
 
-* Copy the target/sead-doi-service-2.0.0-SNAPSHOT.war into TOMCAT_HOME/webapps.
+* Copy the target/sead-doi-service.war into TOMCAT_HOME/webapps.
 
-	cp target/sead-doi-service-2.0.0-SNAPSHOT.war TOMCAT_HOME/webapps/sead-doi-service.war
+	cp target/sead-doi-service.war TOMCAT_HOME/webapps/sead-doi-service.war
 
 * Include the EZID username and password in the configuration file.
 
