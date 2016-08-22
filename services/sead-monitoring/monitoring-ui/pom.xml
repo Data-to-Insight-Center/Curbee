@@ -10,7 +10,7 @@
     <parent>
         <groupId>org.sead.va</groupId>
         <artifactId>sead-monitoring-parent</artifactId>
-        <version>${monitoring.version}</version>
+        <version>2.0.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
