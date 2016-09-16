@@ -36,72 +36,80 @@ import javax.ws.rs.core.Response;
 @Path("/people")
 public abstract class People {
 
-	/**
-	 * 
-	 * Register a new Person
-	 * 
-	 * @param { "provider": <provider>, "identifier", <id> }
-	 * 
-	 * 
-	 * @return 200: {response: "success", id : &lt;ID&gt;} <br>
-	 *         400 Bad Request: {response: "failure", reason : &lt;string&gt;} <br>
-	 *         409 Conflict: {response: "failure", reason : &lt;string&gt;} 500:
-	 *         Failure {response: "failure", reason : &lt;string&gt;}
-	 * 
-	 */
+    /**
+     * Register a new Person
+     *
+     * @param personString
+     *  { "provider": &lt;provider&gt;, "identifier", &lt;id&gt; }
+     *
+     *
+     * @return 200: {response: "success", id : &lt;ID&gt;} <br>
+     *         400 Bad Request: {response: "failure", reason : &lt;string&gt;} <br>
+     *         409 Conflict: {response: "failure", reason : &lt;string&gt;} <br>
+     *         500 Failure {response: "failure", reason : &lt;string&gt;}
+     *
+     */
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public abstract Response registerPerson(String personString);
 
-	/**
-	 * Return the list of people
-	 * 
-	 * @return [ {"name":<name>, "identifier":<id>}, ... ]
-	 */
+    /**
+     * Return the list of people
+     *
+     * @return [ "@context" : {},<br>
+     *          &ensp;{"@id":&lt;person_id&gt;, "email":&lt;email&gt;, "givenName" : &lt;given_name&gt; },<br>
+     *          &ensp;... <br>
+     *         ]
+     */
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public abstract Response getPeopleList();
 
-	/**
-	 * Return the profile for a given person
-	 * 
-	 * @param id
-	 *            the assigned person ID
-	 * 
-	 * @return : json-ld profile document - as harvested
-	 */
+    /**
+     * Return the profile for a given person
+     *
+     * @param id
+     *            the assigned person ID
+     *
+     * @return 200: {"@context" : {}, "@id":&lt;person_id&gt;, "email":&lt;email&gt;, "givenName" : &lt;given_name&gt;, ... } <br>
+     *         404 Not Found: {response: "failure", reason : &lt;string&gt;} <br>
+     *         409 Conflict: {response: "failure", reason : &lt;string&gt;}
+     */
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public abstract Response getPersonProfile(@Encoded @PathParam("id") String id);
 
 
-	/**
-	 * Request to update the profile for a given person
-	 * 
-	 * @param id
-	 *            the assigned person ID
-	 * 
-	 * @return 200 OK: {response: "success", id : &lt;ID&gt;} <br>
-	 *         400 Bad Request: {response: "failure", reason : &lt;string&gt;} <br>
-	 */
+    /**
+     * Request to update the profile for a given person
+     *
+     * @param id
+     *            the assigned person ID
+     *
+     * @return 200 OK: {response: &lt;string&gt;} <br>
+     *         404 Not Found: {response: "failure", reason : &lt;string&gt;} <br>
+     *         409 Conflict: {response: "failure", reason : &lt;string&gt;} <br>
+     *         500 Failure {response: "failure", reason : &lt;string&gt;}
+     */
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public abstract Response updatePersonProfile(@Encoded @PathParam("id") String id);
 
-	/**
-	 * Unregister a person and remove their profile
-	 * 
-	 * @param id
-	 *            the assigned person ID
-	 * 
-	 * @return 200 OK: {response: "success", id : &lt;ID&gt;} <br>
-	 *         400 Bad Request: {response: "failure", reason : &lt;string&gt;} <br>
-	 */
+    /**
+     * Unregister a person and remove their profile
+     *
+     * @param id
+     *            the assigned person ID
+     *
+     * @return 200 OK: {response: &lt;string&gt;} <br>
+     *         404 Not Found: {response: "failure", reason : &lt;string&gt;} <br>
+     *         409 Conflict: {response: "failure", reason : &lt;string&gt;} <br>
+     */
 	@DELETE
 	@Path("/{id}")
 	public abstract Response unregisterPerson(@Encoded @PathParam("id") String id);

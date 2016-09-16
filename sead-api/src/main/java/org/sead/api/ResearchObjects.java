@@ -40,7 +40,7 @@ public abstract class ResearchObjects {
 	/**
 	 * Request publication of a new research object
 	 * 
-	 * @param publicationRequest
+	 * @param publicationRequestString
 	 *            {Aggregation, &lt;ContentObject&gt;, Preferences, {&lt;Preferences
 	 *            list&gt;}, Aggregation Statistics {&lt;Aggregation Statistics List
 	 *            &gt; Repository, &lt;RepositoryId&gt;}}
@@ -68,7 +68,7 @@ public abstract class ResearchObjects {
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	abstract public Response startROPublicationProcess(String matchRequest, @Context HttpServletRequest request);
+	abstract public Response startROPublicationProcess(String publicationRequestString, @Context HttpServletRequest request);
 
 	/**
 	 * Requests matching repositories, Note - request does not create a
@@ -117,9 +117,10 @@ public abstract class ResearchObjects {
 
 	/**
 	 * Return the list of requests
-	 * 
-	 * @param - optional param to filter by status?
-	 * 
+	 *
+     * @param  purpose
+     *             filter by the purpose flag of the research object; the values for the 'purpose' can be 'Production' or 'Testing-Only'
+     *
 	 * @return Aggegation (Title, Identifier), Repository, and Status array
 	 */
 	@GET
@@ -129,8 +130,9 @@ public abstract class ResearchObjects {
 
 	/**
 	 * Return the list of new requests (no status from repository)
-	 * 
-	 * @param - optional param to filter by status?
+	 *
+     * @param  purpose
+     *             filter by the purpose flag of the research object; the values for the 'purpose' can be 'Production' or 'Testing-Only'
 	 * 
 	 * @return Aggegation (Title, Identifier), Repository, and Status array
 	 */

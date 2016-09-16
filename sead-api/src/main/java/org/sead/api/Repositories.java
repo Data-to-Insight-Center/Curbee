@@ -37,89 +37,88 @@ import javax.ws.rs.core.Response;
 public abstract class Repositories {
 
 
-	/**
-	 * 
-	 * Register a new Repository
-	 * 
-	 * @param registerRepository
-	 *            {initialProfile, &lt;initialProfile&gt;}
-	 * 
-	 * <br>
-	 *            where initialProfile is a json profile document for the new
-	 *            repository.
-	 * 
-	 * @see Example input file: < a href = "./impl/ideals.json">./impl/ideals.json</a>
-	 * 
-	 * @return 200: {response: "success", id : &lt;ID&gt;} <br>
-	 *         400 Bad Request: {response: "failure", reason : &lt;string&gt;} <br>
-	 *         409 Conflict: {response: "failure", reason : &lt;string&gt;}
-	 * 
-	 */
+    /**
+     * Register a new Repository
+     *
+     * @param profileString
+     *          profileString is a json profile document for the new repository.<br>
+     *
+     * @return 201: {orgidentifier: &lt;repository_identifier&gt;} <br>
+     *         400 Bad Request: {response: "Failure", reason : &lt;string&gt;} <br>
+     *         409 Conflict: {response: "Failure", reason : &lt;string&gt;}
+     *
+     */
 	@POST
 	@Path("/")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public abstract Response registerRepository(String profileString);
 
-	/**
-	 * Return the list of repositories
-	 * 
-	 * @return [
-	 * 			{"orgidentifier":<id>, "repositoryUrl":<url>},
-	 * 			"repositoryName":<name>, "lastUpdate":<profile update date>
-	 * 		   ]
-	 */
+    /**
+     * Return the list of repositories
+     *
+     * @return [<br>
+     * 			&ensp;{<br>
+     * 			&ensp;&ensp;"orgidentifier":&lt;repository_id&gt;,<br>
+     * 		    &ensp;&ensp;"repositoryUrl":&lt;repository_url&gt;,<br>
+     * 		    &ensp;&ensp;"repositoryName":&lt;repo_name&gt;,<br>
+     * 		    &ensp;&ensp;"lastUpdate":&lt;profile update date&gt;<br>
+     * 		    &ensp;}<br>
+     * 		   ]
+     */
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public abstract Response getRepositoryList();
 
-	/**
-	 * Return the profile for a given repository
-	 * 
-	 * @param id
-	 *            the assigned repository ID
-	 * 
-	 * @return : json-ld profile document - as submitted
-	 */
+    /**
+     * Return the profile for a given repository
+     *
+     * @param id
+     *            the assigned repository ID
+     *
+     * @return 200 OK: {"orgidentifier":&lt;repository_id&gt;, "repositoryUrl":&lt;repository_url&gt;,... } <br>
+     *         404 Not Found: {failure : &lt;string&gt;} <br>
+     */
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public abstract Response getRepositoryProfile(@PathParam("id") String id);
 
-	/**
-	 * Update the profile for a given repository. The orgidentifier element in the new profile must exist and must match the {id} being PUT.
-	 * 
-	 * @param id
-	 *            the assigned repository ID
-	 * 
-	 * @return 200 OK: {response: "success", id : &lt;ID&gt;} <br>
-	 *         400 Bad Request: {response: "failure", reason : &lt;string&gt;} <br>
-	 */
+    /**
+     * Update the profile for a given repository. The orgidentifier element in the new profile must exist and must match the {id} being PUT.
+     *
+     * @param id
+     *            the assigned repository ID
+     *
+     * @return 200 OK: {response : &lt;string&gt;} <br>
+     *         404 Not Found: {failure : &lt;string&gt;} <br>
+     */
 	@PUT
 	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public abstract Response setRepositoryProfile(@PathParam("id") String id, String profile);
 
-	/**
-	 * Unregister a repository and remove its profile
-	 * 
-	 * @param id
-	 *            the assigned repository ID
-	 * 
-	 * @return 200 OK: {response: "success", id : &lt;ID&gt;} <br>
-	 *         400 Bad Request: {response: "failure", reason : &lt;string&gt;} <br>
-	 */
+    /**
+     * Unregister a repository and remove its profile
+     *
+     * @param id
+     *            the assigned repository ID
+     *
+     * @return 200 OK: {response : &lt;string&gt;} <br>
+     *         404 Not Found: {failure : &lt;string&gt;} <br>
+     */
 	@DELETE
 	@Path("/{id}")
 	public abstract Response unregisterRepository(@PathParam("id") String id);
 
 	/**
 	 * Return the set of ROs for a given repository
+	 *
+     * @param  purpose
+     *             filter by the purpose flag of the research object; the values for the 'purpose' can be 'Production' or 'Testing-Only'
 	 * 
-	 * @param  - filter by status?
-	 * 
-	 * @return :array of JSON objects that include the Identifier and Title of the Aggregation, the Repository id, and the list of Status messages 
+	 * @return An array of JSON objects that include the Identifier and Title of the Aggregation, the Repository id, and the list of Status messages
 	 * 
 	 */
 	@GET
@@ -130,8 +129,11 @@ public abstract class Repositories {
 	/**
 	 * Return the set of new ROs for a given repository (those that have no status messages from the repository
 	 * associated with them).
-	 * 
-	 * @return :array of JSON objects that include the Identifier and Title of the Aggregation, the Repository id, 
+	 *
+     * @param  purpose
+     *             filter by the purpose flag of the research object; the values for the 'purpose' can be 'Production' or 'Testing-Only'
+     *
+	 * @return An array of JSON objects that include the Identifier and Title of the Aggregation, the Repository id,
 	 * and the list of Status messages (e.g. those from sead-cpr itself)
 	 * 
 	 */

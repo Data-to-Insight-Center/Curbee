@@ -37,7 +37,7 @@ public abstract class VersionInfo {
 	 * overall version value.
 	 * 
 	 * 
-	 * @return {"version":<version>}
+	 * @return {"version":&lt;version&gt;}
 	 */
 	@GET
 	@Path("/")
