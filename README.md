@@ -25,19 +25,21 @@ Steps to deploy on Tomcat:
 1) Copy the following .war files from relevant target directories into TOMCAT_HOME/webapps.
 ~~~
 sead-c3pr.war
-sead-mm.war
+sead-dataone.war
 sead-doi-service.war
 va-workflow.war
 metadata-gen.war
+sead-mon.war
 ~~~
 
 2) Fix the endpoint URL's in following configuration files under webapps.
 ~~~
-sead-mm/WEB-INF/classes/org/sead/matchmaker/default.properties
 sead-c3pr/WEB-INF/classes/org/sead/api/util/default.properties
+sead-dataone/WEB-INF/classes/org/sead/va/dataone/util/default.properties
 sead-doi-service/WEB-INF/classes/org/seadva/services/util/doi.properties
 va-workflow/WEB-INF/classes/org/sead/workflow/sead-wf.xml
 metadata-gen/WEB-INF/classes/org/seadva/metadatagen/util/Config.properties
+sead-mon/WEB-INF/classes/org/sead/monitoring/ui/util/default.properties
 ~~~
 
 3) Add a setenv.sh file under bin (if it's not already there) and set the 
