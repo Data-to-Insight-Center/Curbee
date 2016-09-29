@@ -45,7 +45,9 @@ metadata-gen/WEB-INF/classes/org/seadva/metadatagen/util/Config.properties
 sure the encoded URL requests work fine.
 
 Ex: 
+~~~
 export JAVA_OPTS="-Xss1024m -Xms512m -Xmx4096m -XX:MaxPermSize=2048m -Dorg.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH=true -Dorg.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH=true"
+~~~
 
 4) If SEAD should run on https, follow the guide below to setup SSL on Tomcat. Make sure that
 you use Sun JDK instead of OpenJDK if you need SSL.
@@ -56,10 +58,13 @@ https://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html
 5) Start the server.
 
 Now the API should be accessible through the following URL.
-
+~~~
 http://host:port/sead-c3pr/api/..
+~~~
 
 For more details on how to use the API, please refer to:
+~~~
 https://opensource.ncsa.illinois.edu/confluence/pages/viewpage.action?pageId=71139377
+~~~
 
 Full documentation of Curbee API is available at http://seadva-test.d2i.indiana.edu/sead-c3pr/index.html
