@@ -18,7 +18,7 @@ for ((i=0;i<iterations;i++))
                 echo "Valid URL"
         else
                 echo “Invalid URL”
-                echo  "Error occurred while querying $url : $(cat $out_file)" | tr -d \\r  | mail -s "SEAD Service Response Failure Alert" charmadu@umail.iu.edu
+                echo  "Error occurred while querying $url : $(cat $out_file)" | tr -d \\r  | mail -s "SEAD Service Response Failure Alert" example@umail.iu.edu
                 exit 1
         fi
     done
@@ -30,5 +30,5 @@ echo "Time elapsed : " $elapsed
 #200 is the pre-determinde upper limit of the time that takes to query $url from seadva-test instance
 if [ "$elapsed" -gt 200 ]
 then
-        echo  "Response time delay("$elapsed"ms) when querying $url : $(cat $out_file)" | tr -d \\r  | mail -s "SEAD Service Response Time Alert" charmadu@umail.iu.edu
+        echo  "Response time delay("$elapsed"ms) when querying $url : $(cat $out_file)" | tr -d \\r  | mail -s "SEAD Service Response Time Alert" example@umail.iu.edu
 fi
