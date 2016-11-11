@@ -1,5 +1,7 @@
 package org.seadva.metadatagen.metagen.impl;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,11 +10,16 @@ import org.seadva.metadatagen.util.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Properties;
 
 
 public class OREMetadataGen extends BaseMetadataGen {
 
+    private static final Logger log = Logger.getLogger(OREMetadataGen.class);
 
     public static String CREATOR = "Creator";
     public static String ABSTRACT = "Abstract";
@@ -28,6 +35,13 @@ public class OREMetadataGen extends BaseMetadataGen {
     private boolean skipValidation;
 
     public OREMetadataGen() {
+        Properties properties = new Properties();
+        try {
+            properties.load(OREMetadataGen.class.getResourceAsStream("./../../log4j.properties"));
+        } catch (IOException e) {
+            log.error("Could not load properties file");
+        }
+        PropertyConfigurator.configure(properties);
         errorMsg = "";
         skipValidation = false;
     }
@@ -57,7 +71,7 @@ public class OREMetadataGen extends BaseMetadataGen {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            System.out.println(OREMetadataGen.class.getName() + " : Error while validating ORE");
+            log.error("Error while validating ORE");
             this.errorMsg = "Error while validating ORE";
             return  false;
         }
@@ -74,19 +88,19 @@ public class OREMetadataGen extends BaseMetadataGen {
         try {
             oreObject = new JSONObject(oreString);
         } catch (JSONException e) {
-            System.out.println(OREMetadataGen.class.getName() + " : ORE is not a valid JSON object");
+            log.error("ORE is not a valid JSON object");
             this.errorMsg = "ORE is not a valid JSON object";
             return false;
         }
 
         if(!oreObject.has(DESCRIBES)) {
-            System.out.println(OREMetadataGen.class.getName() + " : ORE Does not have '" + DESCRIBES + "'");
+            log.error("ORE Does not have '" + DESCRIBES + "'");
             this.errorMsg = "ORE Does not have '" + DESCRIBES + "'";
             return false;
         }
 
         if(!(oreObject.get(DESCRIBES) instanceof JSONObject)) {
-            System.out.println(OREMetadataGen.class.getName() + " : ORE Does not have '" + DESCRIBES + "'");
+            log.error("ORE Does not have '" + DESCRIBES + "'");
             this.errorMsg = "ORE Does not have a valid JSON object for '" + DESCRIBES + "'";
             return false;
         }
@@ -94,17 +108,17 @@ public class OREMetadataGen extends BaseMetadataGen {
         JSONObject object = (JSONObject)oreObject.get(DESCRIBES);
 
         if(!object.has(CREATOR) || !nullCheck(object.get(CREATOR)) ) {
-            System.out.println(OREMetadataGen.class.getName() + " : ORE request does not contain value for '" + CREATOR + "' field.");
+            log.error("ORE request does not contain value for '" + CREATOR + "' field.");
             this.errorMsg = "ORE request does not contain value for '" + CREATOR + "' field.";
             return false;
         }
         if(!object.has(TITLE) || !nullCheck(object.get(TITLE)) ) {
-            System.out.println(OREMetadataGen.class.getName() + " : ORE request does not contain value for '" + TITLE + "' field.");
+            log.error("ORE request does not contain value for '" + TITLE + "' field.");
             this.errorMsg = "ORE request does not contain value for '" + TITLE + "' field.";
             return false;
         }
         if(!object.has(ABSTRACT) || !nullCheck(object.get(ABSTRACT)) ) {
-            System.out.println(OREMetadataGen.class.getName() + " : ORE request does not contain value for '" + ABSTRACT + "' field.");
+            log.error("ORE request does not contain value for '" + ABSTRACT + "' field.");
             this.errorMsg = "ORE request does not contain value for '" + ABSTRACT + "' field.";
             return false;
         }
@@ -118,13 +132,13 @@ public class OREMetadataGen extends BaseMetadataGen {
         JSONObject describes = (JSONObject)oreObject.get(DESCRIBES);
 
         if(!describes.has(AGGREGATES)) {
-            System.out.println(OREMetadataGen.class.getName() + " : ORE Does not have '" + AGGREGATES + "'");
+            log.error("ORE Does not have '" + AGGREGATES + "'");
             this.errorMsg = "ORE Does not have '" + AGGREGATES + "'";
             return false;
         }
 
         if(!(describes.get(AGGREGATES) instanceof JSONArray)) {
-            System.out.println(OREMetadataGen.class.getName() + " : ORE Does not have a valid JSON Array object for '" + AGGREGATES + "'");
+            log.error("ORE Does not have a valid JSON Array object for '" + AGGREGATES + "'");
             this.errorMsg = "ORE Does not have a valid JSON Array object for '" + AGGREGATES + "'";
             return false;
         }
@@ -135,7 +149,7 @@ public class OREMetadataGen extends BaseMetadataGen {
             Object part = aggregates.get(i);
 
             if(!(part instanceof JSONObject)) {
-                System.out.println(OREMetadataGen.class.getName() + " : ORE '" + AGGREGATES + "' has invalid JSON Object");
+                log.error("ORE '" + AGGREGATES + "' has invalid JSON Object");
                 this.errorMsg = "ORE '" + AGGREGATES + "' has invalid JSON Object";
                 return false;
             }
@@ -143,7 +157,7 @@ public class OREMetadataGen extends BaseMetadataGen {
             JSONObject partObject = (JSONObject)part;
 
             if(!partObject.has(IDENTIFIER) || !(partObject.get(IDENTIFIER) instanceof String)) {
-                System.out.println(OREMetadataGen.class.getName() + " : ORE '" + AGGREGATES + "' has Object with invalid '" + IDENTIFIER + "'");
+                log.error("ORE '" + AGGREGATES + "' has Object with invalid '" + IDENTIFIER + "'");
                 this.errorMsg = "ORE '" + AGGREGATES + "' has Object with invalid '" + IDENTIFIER + "'";
                 return false;
             }
@@ -165,12 +179,12 @@ public class OREMetadataGen extends BaseMetadataGen {
             }
 
             if(size > 0 && Constants.validateDownloadLinks && partObject.has(SIMILAR_TO)) {
-                if(!validateDownloadLink(partObject.get(SIMILAR_TO))) {
-                    System.out.println(OREMetadataGen.class.getName() + " : ORE has invalid download link to file with identifier : '" + identifier + "' ");
+                if(!validateDownloadLink(partObject.get(SIMILAR_TO), size)) {
+                    log.error("ORE has invalid download link to file with identifier : '" + identifier + "' ");
                     this.errorMsg = "ORE has invalid download link to file with identifier : '" + identifier + "' ";
                     return false;
                 } else if(this.skipValidation == true) {
-                    System.out.println(OREMetadataGen.class.getName() + " : ORE has a file download link that is not working at the moment : '" + partObject.get(SIMILAR_TO) + "' ");
+                    log.error("ORE has a file download link that is not working at the moment : '" + partObject.get(SIMILAR_TO) + "' ");
                     this.errorMsg = "ORE has a file download link that is not working at the moment : '" + partObject.get(SIMILAR_TO) + "' ";
                     break;
                 }
@@ -180,13 +194,13 @@ public class OREMetadataGen extends BaseMetadataGen {
         return validated;
     }
 
-    private boolean validateDownloadLink(Object downloadLink) {
+    private boolean validateDownloadLink(Object downloadLink, double size) {
         boolean validated = true;
 
         if(!(downloadLink instanceof String))
             return false;
 
-        if(!head((String)downloadLink))
+        if(!head((String)downloadLink, size))
             return false;
 
         return validated;
@@ -209,52 +223,77 @@ public class OREMetadataGen extends BaseMetadataGen {
                 }
             }
         } else {
-            System.out.println(OREMetadataGen.class.getName() + " : Unable to validate ORE since " + object + " is not either a String or an Array");
+            log.error("Unable to validate ORE since " + object + " is not either a String or an Array");
         }
 
         return isNotNull;
     }
 
-    private boolean head(String url) {
+    private boolean head(String url, double fileSize) {
 
+        long startTime = 0;
+        long endTime = 0;
+        long duration = 0;
+
+        HttpURLConnection connection = null;
         try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setConnectTimeout(2000);
-            connection.setReadTimeout(2000);
+            startTime = System.currentTimeMillis();
+            connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setConnectTimeout(60000);
+            connection.setReadTimeout(60000);
             connection.setRequestMethod("HEAD");
             int responseCode = connection.getResponseCode();
+            endTime = System.currentTimeMillis();
+            duration = endTime - startTime;
             if (responseCode == 200) {
+                //log.info("SUCCESS HEAD " + fileSize + " " + duration + " " + url);
                 return true;
             }
+            //log.error("FAIL HEAD " + fileSize + " " + duration + " " + url + " !200");
         } catch (IOException e) {
-            //e.printStackTrace();
+            //log.error("FAIL HEAD " + fileSize + " " + duration + " " + url + " Exception:" + e.getClass());
+        } finally {
+            if (connection != null)
+                connection.disconnect();
         }
 
+        InputStream inputStream = null;
         try {
+            startTime = System.currentTimeMillis();
             URL urlCon = new URL(url);
             URLConnection con = urlCon.openConnection();
-            con.setConnectTimeout(5000);
-            InputStream inputStream = con.getInputStream();
+            con.setConnectTimeout(60000);
+            inputStream = con.getInputStream();
 
             // Read in the first byte from the url.
             int size = 1;
             byte[] data = new byte[size];
             int length = inputStream.read(data);
-            inputStream.close();
+            endTime = System.currentTimeMillis();
+            duration = endTime - startTime;
             if (length == 1) {
-                //System.out.println("Success");
+                //log.info("SUCCESS GET " + fileSize + " " + duration + " " + url);
                 return true;
             } else {
-                System.out.println("FAIL  : Cannot retrieve data from URL " + url);
+                //log.error("FAIL GET " + fileSize + " " + duration + " " + url + " size!=1");
                 return false;
             }
         } catch (IOException e) {
-            System.out.println("FAIL  : Exception thrown while calling the URL " + url + ", Error message : " + e.getMessage());
-            if(e instanceof SocketTimeoutException){
+            if (e instanceof SocketTimeoutException) {
                 this.skipValidation = true;
+                //log.error("FAIL GET " + fileSize + " " + duration + " " + url + " Trivial_Exception" +  e.getMessage());
                 return true;
             }
+            //log.error("FAIL GET " + fileSize + " " + duration + " " + url + " Exception" +  e.getMessage());
             return false;
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
         }
     }
 }

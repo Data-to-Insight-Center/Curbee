@@ -24,6 +24,8 @@ package org.seadva.metadatagen.service;
 import com.sun.jersey.api.client.*;
 import com.sun.jersey.api.client.filter.ClientFilter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.json.JSONException;
@@ -36,8 +38,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Properties;
 
 /**
  * Root resource (exposed at "rest" path)
@@ -48,8 +52,16 @@ public class MetadataGenerator {
     static WebResource pdtWebService;
     static WebResource dataoneTestWebService;
     static WebResource dataoneProdWebService;
+    private static final Logger log = Logger.getLogger(MetadataGenerator.class);
 
     static {
+        Properties properties = new Properties();
+        try {
+            properties.load(MetadataGenerator.class.getResourceAsStream("./../log4j.properties"));
+        } catch (IOException e) {
+            log.error("Could not load properties file");
+        }
+        PropertyConfigurator.configure(properties);
         pdtWebService = Client.create().resource(Constants.pdtURL);
         dataoneTestWebService = Client.create().resource(Constants.dataoneTestURL);
         dataoneProdWebService = Client.create().resource(Constants.dataoneProdURL);
@@ -141,14 +153,14 @@ public class MetadataGenerator {
                             .get(ClientResponse.class);
                     if (response.getStatus() != 200) {
                         String message = "Error while retrieving OREMap from Project Space - Response : " + response.getStatus();
-                        System.out.println(MetadataGenerator.class.getName() + " - " + message);
+                        log.error(message);
                         return Response.status(ClientResponse.Status.BAD_REQUEST)
                                 .entity(message)
                                 .build();
                     }
                 } catch (RuntimeException e) {
                     String message = "Error while retrieving OREMap from Project Space - Response : " + e.getMessage();
-                    System.out.println(MetadataGenerator.class.getName() + " - " + message);
+                    log.error(message);
                     return Response.status(ClientResponse.Status.BAD_REQUEST)
                             .entity(message)
                             .build();
@@ -159,7 +171,7 @@ public class MetadataGenerator {
                 OREMetadataGen oreMetadataGen = new OREMetadataGen();
                 if (!oreMetadataGen.hasValidOREMetadata(oreString)) {
                     String message = "Error occurred while validating OREMap : " + oreMetadataGen.getErrorMsg();
-                    System.out.println(MetadataGenerator.class.getName() + " - " + message);
+                    log.error(message);
                     return Response.status(ClientResponse.Status.BAD_REQUEST)
                             .entity(message)
                             .build();
@@ -189,29 +201,31 @@ public class MetadataGenerator {
                         .post(ClientResponse.class, oreMapDocument.toJson().toString());
 
                 if (postResponse.getStatus() == 200 && !oreMetadataGen.getSkipValidation()) {
+                    log.info("ORE Successfully persisted");
                     return Response.ok(new JSONObject().put("id", mapId).toString()).build();
                 } else if (postResponse.getStatus() == 200 && oreMetadataGen.getSkipValidation()) {
                     try {
+                        log.info("ORE Successfully persisted with a warning");
                         return Response.created(new URI(newMapURL))
                                 .entity(new JSONObject().put("id", mapId).put("warning", oreMetadataGen.getErrorMsg()).toString())
                                 .build();
                     } catch (URISyntaxException e) {
-                        System.out.println(MetadataGenerator.class.getName() + ": Error while persisting OREMap : " + e.getMessage());
+                        log.error("Error while persisting OREMap : " + e.getMessage());
                         return Response.serverError().build();
                     }
                 } else {
-                    System.out.println(MetadataGenerator.class.getName() + ": Error while persisting OREMap in PDT - Response : " + postResponse.getStatus());
+                    log.error("Error while persisting OREMap in PDT - Response : " + postResponse.getStatus());
                     return Response.serverError().build();
                 }
             } else {
-                System.out.println(MetadataGenerator.class.getName() + ": Bad Request : " + messageString);
+                log.error("Bad Request : " + messageString);
                 return Response.status(ClientResponse.Status.BAD_REQUEST)
                         .entity(messageString)
                         .build();
             }
         } catch(Exception e) {
-            System.out.println(e.getStackTrace());
-            System.out.println(e.getMessage());
+            log.error(e.getStackTrace());
+            log.error(e.getMessage());
             e.printStackTrace();
             return Response.status(ClientResponse.Status.BAD_REQUEST)
                     .entity("Exception thrown when persisting OREMap" + e.getMessage())
