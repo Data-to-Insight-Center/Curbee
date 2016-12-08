@@ -121,7 +121,7 @@ public class FGDCMetadataGen extends BaseMetadataGen {
             ro_abstract = StringUtils.join(((ArrayList)aggregation.get(ABSTRACT)).toArray(), ",");
 		}
 
-		Set<String> creators = new HashSet<String>();
+		List<String> creators = new ArrayList<String>();
 		if (aggregation.get(CREATOR) instanceof String) {
 			String creator = getPerson((String) aggregation.get(CREATOR));
 			if (!creator.equals("")) {
@@ -181,7 +181,7 @@ public class FGDCMetadataGen extends BaseMetadataGen {
 	 * Creates an FGDC metadata
 	 */
     public String toFGDC(String title,
-                         Set<String> creators,
+                         List<String> creators,
                          Set<String> contacts,
                          String abstrct,
                          String publicationDate,
@@ -194,11 +194,10 @@ public class FGDCMetadataGen extends BaseMetadataGen {
 		CitationType citationType = idinfoType.addNewCitation();
 		CiteinfoType citeinfoType = citationType.addNewCiteinfo();
 
-		if (creators != null) {
-			Iterator<String> it = creators.iterator();
-			while (it.hasNext()) {
+		if (creators.size() != 0) {
+            for(String creator : creators) {
 				OriginType originType = citeinfoType.addNewOrigin();
-				originType.setStringValue(it.next());
+				originType.setStringValue(creator);
 			}
         }
         else{
