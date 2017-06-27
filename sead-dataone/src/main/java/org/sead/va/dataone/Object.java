@@ -98,7 +98,7 @@ public class Object {
 
         FindIterable<Document> iter = fgdcCollection.find(new Document(Constants.META_INFO + "." + Constants.FGDC_ID, id));
         if(iter != null && iter.first() != null){
-            JSONObject object = new JSONObject(iter.first());
+            JSONObject object = new JSONObject(iter.first().toJson());
             JSONObject metaInfo = (JSONObject) object.get(Constants.META_INFO);
             String fgdcMetadata = object.get(Constants.METADATA).toString();
             String metadataFormat = (String) metaInfo.get(Constants.META_FORMAT);

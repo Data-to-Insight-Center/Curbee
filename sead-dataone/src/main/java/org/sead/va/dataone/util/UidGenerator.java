@@ -13,8 +13,11 @@ import java.util.Scanner;
 
 public class UidGenerator {
     static String lastUIDFilePath = "lastGeneratedUID.txt";
+    private static String catalinaBase;
 
     public UidGenerator() {
+        catalinaBase = System.getProperty("catalina.base");
+        lastUIDFilePath = catalinaBase + "/lastGeneratedUID.txt";
     }
 
     public static Integer generateNextUID() {
