@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright 2015 The Trustees of Indiana University
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~       http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<sead-config>
+    <!--workflow level parameters-->
+    <parameter name="useMessaging">false</parameter>
+
+    <!--list of activities to be executed in SEAD workflow-->
+    <activities>
+        <!--activity to validate the RO-->
+        <activity name="validate_ro" class="org.sead.workflow.activity.impl.ValidateROActivity" transactional="false">
+            <parameter name="pdtUrl">http://localhost:8080/sead-pdt</parameter>
+        </activity>
+        <!--activity to persist the ORE Map-->
+        <activity name="persist_ore" class="org.sead.workflow.activity.impl.PersistOREActivity" transactional="true">
+            <parameter name="metadatagenUrl">http://localhost:8080/metadata-gen</parameter>
+            <parameter name="pdtUrl">http://localhost:8080/sead-pdt/researchobjects</parameter>
+        </activity>
+        <!--activity to persist RO in PDT -->
+        <activity name="persist_ro" class="org.sead.workflow.activity.impl.PersistROActivity" transactional="true">
+            <parameter name="pdtUrl">http://localhost:8080/sead-pdt/researchobjects</parameter>
+        </activity>
+    </activities>
+
+</sead-config>
