@@ -60,3 +60,18 @@ DATAONE_SYNC_SEC - default '45'
 DATAONE_EMAIL_USERNAME
 DATAONE_EMAIL_PASSWORD
 ~~~
+
+Deployments
+---------------
+
+Curbee docker image is hosted in the Docker Hub.
+
+~~~
+https://hub.docker.com/r/d2isead/curbee/
+~~~
+
+Curbee application is created in NDS Labs Workbench(https://www.workbench.nationaldataservice.org) using the Curbee docker image.
+
+~~~
+https://www.workbench.nationaldataservice.org/#/store
+~~~
