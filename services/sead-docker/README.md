@@ -30,25 +30,31 @@ docker run -d -p 8080:8080 -e GOOGLE_API_KEY=<google_api_key> -e CLOWDER_USER=<c
 ~~~
 Curbee Docker container can be configured with the following parameters;
 ~~~
-# configuration parameters for "people" profile providers
+
+# "people" Providers Configuration
+# configuration parameters of "people" profile providers
 GOOGLE_API_KEY - API key of the Google
 LINKEDIN_API_KEY - API key of the Linked-In
 
-# configuration parameters of Clowder
+# Clowder Configuration
+# if Clowder[https://sead2.ncsa.illinois.edu/] is used to publish datasets to Curbee
 CLOWDER_USER - Clowder Username
 CLOWDER_PW - Clowder Password
 
-# configuration parameters of DOI service
-DOI_SHOULDER_PROD
-DOI_SHOULDER_TEST
-DOI_USER
-DOI_PWD
+# DOI Service Configuration
+# if built-in DOI generation service is used
+DOI_SHOULDER_PROD - DOI Shoulder for permanent DOIs
+DOI_SHOULDER_TEST - DOI Shoulder for test/temporary DOIs
+DOI_USER - Username of EZID[https://ezid.cdlib.org/]
+DOI_PWD - Password of EZID
 
-# configuration parameters of DataONE Member Node API
+# DataONE Member Node API Configuration
+# if datasets needs to be cataloged in DataONE[https://www.dataone.org/about]
+# example configuration : https://cn.dataone.org/cn/v1/node/urn:node:SEAD
 DATAONE_NODE_IDENTIFIER
 DATAONE_CONTACT_SUBJECT
 DATAONE_BASE_URL
-#synchronization schedule
+# synchronization schedule
 DATAONE_SYNC_YEAR - default '*'
 DATAONE_SYNC_MONTH - default '*'
 DATAONE_SYNC_DAYM - default '*'
@@ -56,7 +62,7 @@ DATAONE_SYNC_DAYW - default '?'
 DATAONE_SYNC_HOUR - default '*'
 DATAONE_SYNC_MIN - default '0/3'
 DATAONE_SYNC_SEC - default '45'
-#email credentials
+# email credentials - email to notify DataONE MN API related errors
 DATAONE_EMAIL_USERNAME
 DATAONE_EMAIL_PASSWORD
 ~~~
